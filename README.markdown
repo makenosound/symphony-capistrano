@@ -1,6 +1,6 @@
 # Deploying Symphony with Capistrano #
 
-By using Capistrano to manage your Symphony installation, it is possible to completely manage the Symphony deployment process, checking out the latest code, pushing it to the server. This eliminates the need for file transfers, server-side activities, and in-place/in-browser code editing.
+For the unfamiliar, [Capistrano](http://capify.org/) is a ruby library that makes deployment dead simple. By using Capistrano to manage your Symphony installation, it is possible to completely manage the Symphony deployment process, checking out the latest code, pushing it to the server. This eliminates the need for file transfers, server-side activities, and in-place/in-browser code editing. I use a variation of the setup below on all my projects, and it's saved a heap of time (and my butt more than once).
 
 ## Setup ##
 
@@ -10,6 +10,7 @@ Before we get going, you'll need to make sure you've done the following:
  * Ensure your application code is in a remote repository (like Github)
  * Install Git on the server
  * Ensure the deployment user on your server has SSH access to your repository
+ * `git clone` (or download) the `Capfile` from <http://github.com/makenosound/symphony-capistrano>
 
 There are number of guides out there to getting setup with `git` and Capistrano, so I won't bother going into that here.
 
