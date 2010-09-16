@@ -1,27 +1,28 @@
 #------ Capistrano recipe for deploying Symphony CMS ---------------------
-#  Max Wheeler - http://makenosound.com/
 
-# Pull in default Capistrano recipes
-load 'deploy'
+#  Max Wheeler - http://makenosound.com/
 
 #------ Settings ------------------------------
 
 # The name of your website
-set :application, "tasks.makenosound.com"
+set :application, "example.com"
 
 # The path to your deployment directory on the server
 # by default, the name of the application (e.g. "/home/user/projects/example.com")
-set :deploy_to, "/home/maxw/#{application}"
+set :deploy_to, "/home/user/#{application}"
 
 # The git-clone url for your repository
-set :repository, "ssh://git@icelab.repositoryhosting.com/icelab/icelab-site.git"
+set :repository, "http://github.com/example/example-symphony.git"
 set :branch, "master"
 
 # The name of the deployment user-account on the server
-set :user, "maxw"
+set :user, "deploy"
 
 
 #------ Default setup -------------------------
+
+# Load the default Capistrano recipes
+load 'deploy'
 
 #  Standard setup below, won't need editing if unless you're customising
 
@@ -89,10 +90,10 @@ namespace :deploy do
     # Set permissions for everything
     run "chmod -R 755 #{current_release}"
     # Set writable permissions for workspace files
-    run "if [ -e #{current_release}/workspace/data-sources ]; then chmod -R 775 #{current_release}/workspace/data-sources"
-    run "if [ -e #{current_release}/workspace/events ]; then chmod -R 775 #{current_release}/workspace/events"
-    run "if [ -e #{current_release}/workspace/pages ]; then chmod -R 775 #{current_release}/workspace/pages"
-    run "if [ -e #{current_release}/workspace/utilities ]; then chmod -R 775 #{current_release}/utilities"
+    run "if [ -e #{current_release}/workspace/data-sources ]; then chmod -R 775 #{current_release}/workspace/data-sources; fi"
+    run "if [ -e #{current_release}/workspace/events ]; then chmod -R 775 #{current_release}/workspace/events; fi"
+    run "if [ -e #{current_release}/workspace/pages ]; then chmod -R 775 #{current_release}/workspace/pages; fi"
+    run "if [ -e #{current_release}/workspace/utilities ]; then chmod -R 775 #{current_release}/workspace/utilities; fi"
     # Set writable permissions for shared media directory
     run "chmod 775 #{deploy_to}/#{shared_dir}/media"
   end
@@ -145,12 +146,12 @@ namespace :deploy do
   namespace :media do
     desc "Copy local /workspace/media contents to the shared media folder on the server"
     task :upload do
-      top.upload("workspace/media/*", "#{deploy_to}/#{shared_dir}/media", :via => :scp, :recursive => true)
+      top.upload("workspace/media/.", "#{deploy_to}/#{shared_dir}/media", :via => :scp, :recursive => true)
     end
     
     desc "Copy contents of the shared media folder on the server to the local /workspace/media directory"
     task :download do
-      top.download("#{deploy_to}/#{shared_dir}/media/*", "workspace/media", :via => :scp, :recursive => true)
+      top.download("#{deploy_to}/#{shared_dir}/media/.", "workspace/media", :via => :scp, :recursive => true)
     end
   end
 end
